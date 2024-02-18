@@ -1,0 +1,122 @@
+.modal {
+  width: 480px;
+  box-sizing: border-box;
+  padding-top: 36px;
+  border-radius: 12px;
+  background: #c2f5ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 8px;
+}
+
+.title {
+  color: #004980;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 48px;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.username {
+  width: 276px;
+  height: 45px;
+  background-color: #fff;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.username::placeholder {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: center;
+  color: #999999;
+}
+
+.addButton {
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 12px;
+  background: #7ac100;
+  color: #fff;
+  text-align: center;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  border: none;
+  cursor: pointer;
+  margin-top: 12px;
+  margin-bottom: 28px;
+}
+
+.button:hover {
+  background: #7ac100cc;
+}
+
+.description {
+  color: #000;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+
+  margin-bottom: 10px;
+}
+
+.time {
+  color: #000;
+  font-family: StratosSkyeng;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 72px;
+
+  margin-bottom: 40px;
+}
+
+.leaderboardLink {
+  color: #004980;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 32px;
+  margin-top: 18px;
+  padding-bottom: 48px;
+}
+
+.leaderboardLink:hover {
+  text-decoration: none;
+}

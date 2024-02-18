@@ -1,0 +1,37 @@
+.container {
+  position: relative;
+  cursor: pointer;
+}
+
+.toolTip {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  top: -90px;
+}
+
+.toolTipText {
+  position: absolute;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  color: #004980;
+  width: 134px;
+  margin-bottom: 5px;
+}
+
+.toolTipTextWider {
+  position: absolute;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  color: #004980;
+  width: 172px;
+  margin-bottom: 5px;
+}

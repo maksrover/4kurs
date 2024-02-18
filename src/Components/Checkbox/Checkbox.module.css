@@ -1,0 +1,19 @@
+.rules {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 38px;
+}
+
+.heading {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.input {
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+}

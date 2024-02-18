@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.heart {
+  height: 96px;
+  width: 96px;
+  fill: red;
+  stroke: red;
+}
+
+.delete {
+  display: none;
+}

@@ -1,0 +1,84 @@
+.container {
+  width: 672px;
+  margin: 0 auto;
+  padding: 26px;
+  padding-top: 22px;
+  box-sizing: border-box;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modalContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #004980c0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.superPowersContainer {
+  display: flex;
+  gap: 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.modalBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #004980c0;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+}
+
+.modalWindow {
+  position: absolute;
+  top: 115px;
+  margin-right: 90px;
+  display: flex;
+}
+
+.toolTip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolTipEpiphany {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: -150px;
+}
+
+.toolTipAlohomora {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -150px;
+}
