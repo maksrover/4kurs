@@ -28,8 +28,18 @@ const gameSlice = createSlice({
     removeErrors(state) {
       state.errors = 0;
     },
+    resetErrors(state) {
+      state.errors = 0;
+    },
   },
 });
 
-export const { setLeaders, setCurrentLevel, setIsActiveEasyMode, updateErrors, removeErrors } = gameSlice.actions;
+export const {
+  setLeaders,
+  setCurrentLevel,
+  setIsActiveEasyMode,
+  updateErrors,
+  removeErrors,
+  resetErrors,
+} = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;

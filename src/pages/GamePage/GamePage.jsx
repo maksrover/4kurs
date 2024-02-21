@@ -4,7 +4,7 @@ import { Cards } from "../../Components/Cards/Cards";
 import { ErrorCounter } from "../../Components/ErrorCounter/ErrorCounter";
 import { useSelector, useDispatch } from "react-redux";
 import { getLeaders } from "../../api";
-import { setLeaders, removeErrors } from "../../store/slices"; // Импортируем removeErrors
+import { setLeaders, resetErrors } from "../../store/slices"; // Импортируем resetErrors
 
 export function GamePage() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export function GamePage() {
   useEffect(() => {
     getLeaders().then((leaders) => dispatch(setLeaders(leaders)));
     if (isActiveEasyMode) {
-      dispatch(removeErrors()); // Вызываем removeErrors при начале новой игры в легком режиме
+      dispatch(resetErrors()); // Вызываем resetErrors при начале новой игры в легком режиме
     }
   }, [dispatch, isActiveEasyMode]);
 

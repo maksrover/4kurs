@@ -6,7 +6,7 @@ import { EndGameModal } from "../../Components/EndGameModal/EndGameModal";
 import { Button } from "../../Components/Button/Button";
 import { Card } from "../../Components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { removeErrors, updateErrors } from "../../store/slices";
+import { resetErrors, updateErrors } from "../../store/slices";
 import { Epiphany } from "../Superpowers/EpiphanyIcon";
 import { Alohomora } from "../Superpowers/AlohomoraIcon";
 import { Timer } from "../Timer/Timer";
@@ -14,9 +14,7 @@ import { ToolTips } from "../ToolTips/ToolTips";
 
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
-
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
-
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 const STATUS_PAUSED = "STATUS_PAUSED";
 
@@ -43,55 +41,25 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
-/**
- * Основной компонент игры, внутри него находится вся игровая механика и логика.
- * pairsCount - сколько пар будет в игре
- * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
- */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const dispatch = useDispatch();
-  // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
-  // Количество ошибок в режиме игры до трех ошибок
   const errors = useSelector((state) => state.game.errors);
-  // Статус режима игры до трех ошибок
   const isActiveEasyMode = useSelector((state) => state.game.isActiveEasyMode);
 
-  // Доступно ли использование прозрения
   const [isEpiphanyAvailable, setIsEpiphanyAvailable] = useState(true);
-  // Доступно ли использование алохоморы
   const [isAlohomoraAvailable, setIsAlohomoraAvailable] = useState(true);
-
   const [isEpiphanyMouseEnter, setIsEpiphanyMouseEnter] = useState(false);
   const [isAlohomoraMouseEnter, setIsAlohomoraMouseEnter] = useState(false);
 
-  const onEpiphanyMouseEnter = ({ setIsEpiphanyMouseEnter }) => {
-    setIsEpiphanyMouseEnter(true);
-  };
-
-  const onEpiphanyMouseLeave = ({ setIsEpiphanyMouseEnter }) => {
-    setIsEpiphanyMouseEnter(false);
-  };
-
-  const onAlohomoraMouseEnter = ({ setIsAlohomoraMouseEnter }) => {
-    setIsAlohomoraMouseEnter(true);
-  };
-
-  const onAlohomoraMouseLeave = ({ setIsAlohomoraMouseEnter }) => {
-    setIsAlohomoraMouseEnter(false);
-  };
-
-  // Если допущено 3 ошибки, игра заканчивается
   useEffect(() => {
-    if (errors === 3) {
+    if (errors === 3 && status !== STATUS_LOST) {
       finishGame(STATUS_LOST);
-      dispatch(removeErrors());
+      dispatch(resetErrors());
     }
-  });
+  }, [errors, status]);
 
-  // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
@@ -100,6 +68,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function finishGame(status = STATUS_LOST) {
     setStatus(status);
   }
+
   function startGame() {
     const startDate = new Date();
     setTimer(getTimerValue(startDate, null));
@@ -109,24 +78,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setIsAlohomoraAvailable(true);
     setIsAlohomoraMouseEnter(false);
   }
+
   function resetGame() {
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    if (isActiveEasyMode) {
+      dispatch(resetErrors());
+    }
   }
 
-  /**
-   * Обработка основного действия в игре - открытие карты.
-   * После открытия карты игра может пепереходит в следующие состояния
-   * - "Игрок выиграл", если на поле открыты все карты
-   * - "Игрок проиграл", если на поле есть две открытые карты без пары
-   * - "Игра продолжается", если не случилось первых двух условий
-   */
   const openCard = (clickedCard) => {
-    // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
       return;
     }
-    // Игровое поле после открытия кликнутой карты
+
     const nextCards = cards.map((card) => {
       if (card.id !== clickedCard.id) {
         return card;
@@ -142,16 +107,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const isPlayerWon = nextCards.every((card) => card.open);
 
-    // Победа - все карты на поле открыты
     if (isPlayerWon) {
       finishGame(STATUS_WON);
       return;
     }
 
-    // Открытые карты на игровом поле
     const openCards = nextCards.filter((card) => card.open);
 
-    // Ищем открытые карты, у которых нет пары среди других открытых
     const openCardsWithoutPair = openCards.filter((card) => {
       const sameCards = openCards.filter(
         (openCard) => card.suit === openCard.suit && card.rank === openCard.rank
@@ -166,13 +128,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       dispatch(updateErrors());
 
       if (!isActiveEasyMode) {
         finishGame(STATUS_LOST);
-        dispatch(removeErrors());
+        dispatch(resetErrors());
       } else {
         const updatedCards = nextCards.map((card) => {
           if (
@@ -196,19 +157,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       return;
     }
-    // ... игра продолжается
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
-  // Игровой цикл
   useEffect(() => {
-    // В статусах кроме превью доп логики не требуется
     if (status !== STATUS_PREVIEW) {
       return;
     }
 
-    // В статусе превью мы
     if (pairsCount > 36) {
       alert("Столько пар сделать невозможно");
       return;
@@ -293,18 +250,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               <Epiphany
                 isAvailable={isEpiphanyAvailable}
                 onClick={onEpiphanyClick}
-                onMouseEnter={onEpiphanyMouseEnter}
-                onMouseLeave={onEpiphanyMouseLeave}
-                setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
+                onMouseEnter={() => setIsEpiphanyMouseEnter(true)}
+                onMouseLeave={() => setIsEpiphanyMouseEnter(false)}
                 isAlohomoraMouseEnter={isAlohomoraMouseEnter}
                 isAlohomoraAvailable={isAlohomoraAvailable}
               />
               <Alohomora
                 isAvailable={isAlohomoraAvailable}
                 onClick={onAlohomoraClick}
-                onMouseEnter={onAlohomoraMouseEnter}
-                onMouseLeave={onAlohomoraMouseLeave}
-                setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
+                onMouseEnter={() => setIsAlohomoraMouseEnter(true)}
+                onMouseLeave={() => setIsAlohomoraMouseEnter(false)}
                 isEpiphanyMouseEnter={isEpiphanyMouseEnter}
                 isEpiphanyAvailable={isEpiphanyAvailable}
               />
