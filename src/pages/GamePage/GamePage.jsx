@@ -1,12 +1,10 @@
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-
 import { Cards } from "../../Components/Cards/Cards";
 import { ErrorCounter } from "../../Components/ErrorCounter/ErrorCounter";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { getLeaders } from "../../api";
-import { useDispatch } from "react-redux";
-import { setLeaders } from "../../store/slices";
+import { setLeaders, removeErrors } from "../../store/slices"; // Импортируем removeErrors
 
 export function GamePage() {
   const dispatch = useDispatch();
@@ -15,7 +13,10 @@ export function GamePage() {
 
   useEffect(() => {
     getLeaders().then((leaders) => dispatch(setLeaders(leaders)));
-  }, [dispatch]);
+    if (isActiveEasyMode) {
+      dispatch(removeErrors()); // Вызываем removeErrors при начале новой игры в легком режиме
+    }
+  }, [dispatch, isActiveEasyMode]);
 
   return (
     <>
