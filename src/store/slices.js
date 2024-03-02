@@ -6,7 +6,7 @@ const gameSlice = createSlice({
     leaders: [],
     currentLevel: null,
     isActiveEasyMode: false,
-    errors: 0,
+    errors: 0, // Добавлено состояние для хранения количества ошибок
   },
   reducers: {
     setLeaders(state, action) {
@@ -17,6 +17,10 @@ const gameSlice = createSlice({
     },
     setIsActiveEasyMode(state) {
       state.isActiveEasyMode = !state.isActiveEasyMode;
+      if (!state.isActiveEasyMode) {
+        // Сброс количества ошибок при выключении легкого режима
+        state.errors = 0;
+      }
     },
     updateErrors(state) {
       state.errors = state.errors + 1;
@@ -24,8 +28,18 @@ const gameSlice = createSlice({
     removeErrors(state) {
       state.errors = 0;
     },
+    resetErrors(state) {
+      state.errors = 0;
+    },
   },
 });
 
-export const { setLeaders, setCurrentLevel, setIsActiveEasyMode, updateErrors, removeErrors } = gameSlice.actions;
+export const {
+  setLeaders,
+  setCurrentLevel,
+  setIsActiveEasyMode,
+  updateErrors,
+  removeErrors,
+  resetErrors,
+} = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;

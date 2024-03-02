@@ -1,6 +1,6 @@
 .timer {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
 
   color: #fff;
   font-family: StratosSkyeng;
@@ -16,6 +16,7 @@
   margin-top: 34px;
   margin-bottom: 10px;
 }
+
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
